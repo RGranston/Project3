@@ -12,18 +12,18 @@ cursor = con.cursor()
 
 
 #write sql query
-sql_query = (f"SELECT employeeNumber, lastname, customer number, checkNumber, paymentDate, amount FROM employees LEFT JOIN payments ON employeeNumber = salesRepEmployeeNumber LEFT JOIN payments ON payments.customerNumber = customers.customerNumber WHERE employeeNymber = {selector} ORDERD BY paymentDate;")
+sql_query = (f"SELECT employeeNumber, lastname, customer number, checkNumber, paymentDate, amount FROM employees LEFT JOIN payments ON employeeNumber = salesRepEmployeeNumber LEFT JOIN payments ON payments.customerNumber = customers.customerNumber WHERE employeeNymber = {employee} ORDERD BY paymentDate;")
 
         
 
 
 #ask for employee number
 def ask_employee_number():
-    selector = questionary.text("Please select your employee number.").ask()
-    return selector
+    employee = questionary.text("Please select your employee number.").ask()
+    return employee
 
 def run():
-    selector = ask_employee_number()
+    employee = ask_employee_number()
     try: 
         cursor.execute(sql_query)
         results = cursor.fetchall()
