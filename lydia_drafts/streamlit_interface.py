@@ -17,6 +17,7 @@ SELECT
     employeeNumber,
     firstName,
     lastName,
+    customerName,
     checkNumber,
     paymentDate,
     amount
@@ -35,7 +36,21 @@ if st.button("Search records"):
         results = cursor.fetchall()
 
         for record in results:
-            st.write(record)
+            employee_number = record['employeeNumber']
+            last_name = record['lastName']
+            first_name = record['firstName']
+            customer_name = record['customerName']
+            check_number = record['checkNumber']
+            payment_date = record['paymentDate']
+            amount = record['amount']
+            st.write(f"Employee Number: {employee_number}")
+            st.write(f"Employee Name: {first_name} {last_name}")
+            st.write(f"Customer Name: {customer_name}")
+            st.write(f"Check Number: {check_number}")
+            st.write(f"Payment Date: {payment_date}")
+            st.write(f"Payment Amount: ${amount}")
+            st.markdown("---")
+
 
     except Exception as e:
         print(f"Exception occurred: {e}")
