@@ -131,3 +131,4 @@ dmypy.json
 #config file
 /lydia_drafts/config.py
 /utils/config.py
+/drafts/config.py
