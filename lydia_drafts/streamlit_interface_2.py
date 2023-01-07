@@ -4,13 +4,14 @@ from connector import start_rds_connection
 import streamlit as st
 import pandas as pd
 import sqlalchemy as sql
+from config import PASSWORD
 
 #establish database connection
 connection = start_rds_connection()
 #create cursor object
 cursor = connection.cursor()
 
-database_connection_string = 'mysql+pymysql://admin:fintechfinalproject@project-database.cmlzwclsvyh6.us-west-2.rds.amazonaws.com:3306/classicmodels'
+database_connection_string = f"mysql+pymysql://admin:{PASSWORD}@project-database.cmlzwclsvyh6.us-west-2.rds.amazonaws.com:3306/classicmodels"
 
 engine = sql.create_engine(database_connection_string, echo=True)
 
