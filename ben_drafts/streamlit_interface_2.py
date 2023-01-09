@@ -70,7 +70,7 @@ connection.close()
 
 # Check Inventory Status
 
-
+# Select Product Line to view
 product_type = st.sidebar.selectbox(
     "Which Product?",
     ("Classic Cars", "Motorcycles","Planes","Ships","Trains","Trucks and Buses", "Vintage Cars"))
@@ -103,6 +103,34 @@ if st.button("Inventory Status"):
         st.write(f"Error: {e}")
 
 
+vendor = st.sidebar.selectbox(
+    "Which Vendor? ?",
+    ("Autoart Studio Design", "Autoart Studio Design","Classic Metal Creations","Classic Metal Creations","Gearbox Collectibles","Highway 66 Mini Classics",
+     "Min Lin Diecast", "Motor City Art Classics","Red Start Diecast","Second Gear Diecast","Studio M Art Models","Unimax Art Galleries","Welly Diecast Productions"))
 
 
+vendor_status_query = f'''
+select
+p.productName,
+p.productVendor,
+p.quantityInStock,
+p.buyPrice,
+pl.productLine
 
+from products p
+join productlines pl
+on p.productLine = pl.productLine
+WHERE p.productVendor = "{vendor}"
+order by p.productVendor
+
+
+'''
+
+if st.button("Inventory Status(Vendor)"):
+    try:
+        results_df = pd.read_sql_query(vendor_status_query, con=engine)
+        st.dataframe(results_df)
+
+
+    except Exception as e:
+        st.write(f"Error: {e}")
