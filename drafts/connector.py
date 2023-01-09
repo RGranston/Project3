@@ -2,8 +2,6 @@
 import pymysql.cursors
 from config import *
 
-
-
 # define function to establish RDS connection
 def start_rds_connection():
     try:
