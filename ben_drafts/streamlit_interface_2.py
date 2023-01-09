@@ -71,6 +71,11 @@ connection.close()
 # Check Inventory Status
 
 
+product_type = st.sidebar.selectbox(
+    "Which Product?",
+    ("Classic Cars", "Motorcycles","Planes","Ships","Trains","Trucks and Buses", "Vintage Cars"))
+   
+
 item_status_query = f'''
 select
 p.productName,
@@ -82,9 +87,9 @@ pl.productLine
 from products p
 join productlines pl
 on p.productLine = pl.productLine
-
-
+WHERE p.productLine = "{product_type}"
 order by pl.productLine
+
 
 '''
 
@@ -96,3 +101,8 @@ if st.button("Inventory Status"):
 
     except Exception as e:
         st.write(f"Error: {e}")
+
+
+
+
+
