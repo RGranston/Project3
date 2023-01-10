@@ -209,6 +209,50 @@ if st.button("Inventory Status by Vendor:"):
     except Exception as e:
         st.write(f"Error: {e}")
 
+st. markdown("## Add Customer")
+Customer_number = int
+Customer_name = vars
+Last_name = vars
+First_name = vars
+Phone = vars
+Address_line_1 = vars
+City = vars
+State = vars
+Country = vars
+
+
+st.write (" #### Enter Customer information")
+customerNumber = st.text_input("Customer Number")
+customerName = st.text_input("Customer Name")
+contactLastName = st.text_input("Last Name")
+contactFirstName = st.text_input("First Name")
+phone = st.text_input("Phone")
+addressLine1 = st.text_input("Address line 1")
+city = st.text_input("City")
+state = st.text_input("State")
+country = st.text_input("Country")
+
+if st.button("Enter Customer"):
+    
+    try:
+        sql = f"INSERT INTO customers (`customerNumber`, `customerName`, `contactLastName`, `contactFirstName`, \
+                                        `phone`, `addressLine1`, `city`, `state`,`country`) \
+                                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);"
+        cursor.execute(sql, (customerNumber,customerName,contactLastName,contactFirstName, \
+                                phone,addressLine1,city, state, country))
+
+        # Connection is not autocommit by default, so we must commit to save changes
+        connection.commit()
+        print(f'Successfully inserted records')
+        
+    except Exception as e:
+        print(f'Error in insertion to MySQL database: {e}')
+    #insert_records()
+    st.write ("Records successfully inserted")
+
+
+
+
 st.markdown("### Update Customer Records:")
 
 customer_information = {
