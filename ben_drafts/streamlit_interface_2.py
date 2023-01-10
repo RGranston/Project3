@@ -22,7 +22,8 @@ identifiers = {
     "First Name":"firstName",
     "Extension":"extension"
 }
-st.markdown("# Classic Models Employee Dashboard:")
+st.markdown("# Classic Models Inc.") 
+st.markdown("## Employee Dashboard:")
 image = Image.open('69_camaro.jpeg')
 
 
@@ -31,16 +32,16 @@ st.image(image)
 st.markdown("### Employee Records Search:")
 
 #the employee selects their identifier type
-identifier_type = st.sidebar.selectbox(
-    "By what information would you like to search for records?",
-    (identifiers))
+#identifier_type = st.sidebar.selectbox(
+    #"By what information would you like to search for records?",
+    #(identifiers))
 
 #change the identifier type to it can be part of the query
-identifier = identifiers.get(identifier_type)
+#identifier = identifiers.get(identifier_type)
 
 #text box where the employee enters their information
-user_input = st.sidebar.text_input(f"Enter your {identifier_type}")
-
+#user_input = st.sidebar.text_input(f"Enter your {identifier_type}")
+user_input = st.sidebar.text_input(f"Enter your employee number")
 #employee lookup
 employee_lookup_query = f'''
 SELECT * FROM employees;
@@ -86,7 +87,7 @@ if st.button("Employee Sales"):
     except Exception as e:
         st.write(f"Error: {e}")
 
-connection.close()
+
 
 #employee customer list
 employee_customer_query = f'''
@@ -145,7 +146,7 @@ st.markdown("### Inventory Status:")
 
 # Select Product Line to view
 product_type = st.selectbox(
-    "Which Product?",
+    "Which product line would you like to view?",
     ("Classic Cars", "Motorcycles","Planes","Ships","Trains","Trucks and Buses", "Vintage Cars"))
    
 
@@ -177,7 +178,7 @@ if st.button("Inventory Status by Product Line:"):
 
 
 vendor = st.selectbox(
-    "Which Vendor?",
+    "Which vendor would you like to view?",
     ("Autoart Studio Design", "Autoart Studio Design","Classic Metal Creations","Classic Metal Creations","Gearbox Collectibles","Highway 66 Mini Classics",
      "Min Lin Diecast", "Motor City Art Classics","Red Start Diecast","Second Gear Diecast","Studio M Art Models","Unimax Art Galleries","Welly Diecast Productions"))
 
@@ -207,3 +208,45 @@ if st.button("Inventory Status by Vendor:"):
 
     except Exception as e:
         st.write(f"Error: {e}")
+
+st.markdown("### Update Customer Records:")
+
+customer_information = {
+    "Customer Name":"customerName",
+    "Contact Last Name":"contactLastName",
+    "Contact First Name":"contactFirstName",
+    "Phone Number":"phone",
+    "Address Line 1":"addressLine1",
+}
+
+#ways the employee can identify themself
+customer_number = st.text_input("Enter your customer number")
+
+information_type = st.selectbox("What information would you like to update?", (customer_information))
+
+new_input = st.text_input(f"Enter your new {information_type}")
+
+#change the identifier type to it can be part of the query
+info_to_update = customer_information.get(information_type)
+
+#write sql query
+sql_query = f"""
+UPDATE
+    customers
+SET {info_to_update} = "{new_input}"
+WHERE customerNumber = {customer_number};
+"""
+
+#press the button to search records
+if st.button("Update Information"):
+    try:
+        #pd.read_sql_query(sql_query, con=engine)
+        #st.write("Update Successful")
+        cursor.execute(sql_query)
+        connection.commit()
+        st.write("Update Successful")
+
+    except Exception as e:
+        st.write(f"Error: {e}")
+
+connection.close()
