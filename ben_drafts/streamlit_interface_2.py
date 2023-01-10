@@ -4,7 +4,7 @@ import streamlit as st
 import pandas as pd
 import sqlalchemy as sql
 from config import PASSWORD, USERNAME, ENDPOINT, DBNAME, PORT
-
+from PIL import Image
 #establish database connection
 connection = start_rds_connection()
 #create cursor object
@@ -22,8 +22,10 @@ identifiers = {
     "First Name":"firstName",
     "Extension":"extension"
 }
-
-st.markdown("# Employee Records Search")
+st.markdown("# Classic Models Employee Dashboard:")
+image = Image.open('69_camaro.jpeg')
+st.image(image)
+st.markdown("### Employee Records Search:")
 
 #the employee selects their identifier type
 identifier_type = st.sidebar.selectbox(
@@ -68,6 +70,8 @@ if st.button("Search records"):
 
 connection.close()
 
+
+st.markdown("### Inventory Status:")
 # Check Inventory Status
 
 # Select Product Line to view
@@ -93,7 +97,7 @@ order by pl.productLine
 
 '''
 
-if st.button("Inventory Status"):
+if st.button("Inventory Status by Product Line:"):
     try:
         results_df = pd.read_sql_query(item_status_query, con=engine)
         st.dataframe(results_df)
@@ -126,7 +130,7 @@ order by p.productVendor
 
 '''
 
-if st.button("Inventory Status(Vendor)"):
+if st.button("Inventory Status by Vendor:"):
     try:
         results_df = pd.read_sql_query(vendor_status_query, con=engine)
         st.dataframe(results_df)
