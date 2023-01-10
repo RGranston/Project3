@@ -24,7 +24,10 @@ identifiers = {
 }
 st.markdown("# Classic Models Employee Dashboard:")
 image = Image.open('69_camaro.jpeg')
+
+
 st.image(image)
+
 st.markdown("### Employee Records Search:")
 
 #the employee selects their identifier type
@@ -37,6 +40,21 @@ identifier = identifiers.get(identifier_type)
 
 #text box where the employee enters their information
 user_input = st.sidebar.text_input(f"Enter your {identifier_type}")
+
+#employee lookup
+employee_lookup_query = f'''
+SELECT * FROM employees;
+'''
+
+#press the button to search records
+if st.button("Employee Lookup"):
+    try:
+        results_df = pd.read_sql_query(employee_lookup_query, con=engine)
+        st.dataframe(results_df)
+
+
+    except Exception as e:
+        st.write(f"Error: {e}")
 
 #write sql query
 sql_query = f"""
@@ -53,13 +71,13 @@ LEFT JOIN customers ON
     employeeNumber = salesRepEmployeeNumber
 LEFT JOIN payments ON
     payments.customerNumber = customers.customerNumber
-WHERE {identifier} = "{user_input}"
+WHERE employeeNumber = "{user_input}"
 ORDER BY
     paymentDate;
 """
 
 #press the button to search records
-if st.button("Search records"):
+if st.button("Employee Sales"):
     try:
         results_df = pd.read_sql_query(sql_query, con=engine)
         st.dataframe(results_df)
@@ -70,12 +88,63 @@ if st.button("Search records"):
 
 connection.close()
 
+#employee customer list
+employee_customer_query = f'''
+SELECT * FROM customers WHERE salesRepEmployeeNumber = "{user_input}";
+'''
 
+if st.button("Employee's Customer List"):
+    try:
+        results_df = pd.read_sql_query(employee_customer_query, con=engine)
+        st.dataframe(results_df)
+
+
+    except Exception as e:
+        st.write(f"Error: {e}")
+# Check number of shipped orders
+
+shipped_orders_query = f'''
+
+select 
+e.firstName, 
+e.lastName, 
+count(*) as 'Number of shipped orders'
+from customers c
+join orders o on o.customerNumber = c.customerNumber
+join employees e on e.employeeNumber = c.salesRepEmployeeNumber
+where o.status = 'Shipped'
+group by e.firstName, e.lastName
+order by count(*)desc
+'''
+
+#press the button to show number of shipped orders
+if st.button("Number of shipped orders by employee"):
+    try:
+        results_df = pd.read_sql_query(shipped_orders_query, con=engine)
+        st.dataframe(results_df)
+
+
+    except Exception as e:
+        st.write(f"Error: {e}")
+
+#orders that havent shipped
+not_shipped_query = f'''
+SELECT * FROM orders WHERE status != 'Shipped';
+'''
+
+if st.button("Orders Not Shipped"):
+    try:
+        results_df = pd.read_sql_query(not_shipped_query, con=engine)
+        st.dataframe(results_df)
+
+
+    except Exception as e:
+        st.write(f"Error: {e}")
 st.markdown("### Inventory Status:")
 # Check Inventory Status
 
 # Select Product Line to view
-product_type = st.sidebar.selectbox(
+product_type = st.selectbox(
     "Which Product?",
     ("Classic Cars", "Motorcycles","Planes","Ships","Trains","Trucks and Buses", "Vintage Cars"))
    
@@ -107,8 +176,8 @@ if st.button("Inventory Status by Product Line:"):
         st.write(f"Error: {e}")
 
 
-vendor = st.sidebar.selectbox(
-    "Which Vendor? ?",
+vendor = st.selectbox(
+    "Which Vendor?",
     ("Autoart Studio Design", "Autoart Studio Design","Classic Metal Creations","Classic Metal Creations","Gearbox Collectibles","Highway 66 Mini Classics",
      "Min Lin Diecast", "Motor City Art Classics","Red Start Diecast","Second Gear Diecast","Studio M Art Models","Unimax Art Galleries","Welly Diecast Productions"))
 
