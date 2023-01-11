@@ -17,7 +17,7 @@ engine = sql.create_engine(database_connection_string, echo=True)
 
 #application header
 st.markdown("# Classic Models Inc. Employee Dashboard") 
-image = Image.open('69_camaro.jpeg')
+image = Image.open('./images/69_camaro.jpeg')
 st.image(image)
 
 #employee records search header
