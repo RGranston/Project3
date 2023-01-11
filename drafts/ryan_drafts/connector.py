@@ -19,6 +19,3 @@ def start_rds_connection():
         connection = None
 
     return connection
-
-# initiate RDS connection
-connection = start_rds_connection()

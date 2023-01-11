@@ -129,6 +129,7 @@ dmypy.json
 .pyre/
 
 #config file
+/config.py
 /lydia_drafts/config.py
 /utils/config.py
 /drafts/config.py
