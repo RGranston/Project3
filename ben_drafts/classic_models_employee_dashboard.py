@@ -23,11 +23,13 @@ identifiers = {
     "Extension":"extension"
 }
 st.markdown("# Classic Models Inc.") 
-st.markdown("## Employee Dashboard:")
 image = Image.open('69_camaro.jpeg')
-
-
 st.image(image)
+st.markdown("## Employee Dashboard:")
+
+
+
+
 
 st.markdown("### Employee Records Search:")
 
@@ -167,7 +169,7 @@ order by pl.productLine
 
 '''
 
-if st.button("Inventory Status by Product Line:"):
+if st.button("Inventory Status by Product Line"):
     try:
         results_df = pd.read_sql_query(item_status_query, con=engine)
         st.dataframe(results_df)
@@ -200,7 +202,7 @@ order by p.productVendor
 
 '''
 
-if st.button("Inventory Status by Vendor:"):
+if st.button("Inventory Status by Vendor"):
     try:
         results_df = pd.read_sql_query(vendor_status_query, con=engine)
         st.dataframe(results_df)
@@ -208,6 +210,47 @@ if st.button("Inventory Status by Vendor:"):
 
     except Exception as e:
         st.write(f"Error: {e}")
+
+st. markdown("## Add Customer")
+Customer_number = int
+Customer_name = vars
+Last_name = vars
+First_name = vars
+Phone = vars
+Address_line_1 = vars
+City = vars
+State = vars
+Country = vars
+
+
+st.write (" #### Enter Customer Information")
+customerNumber = st.text_input("Customer Number")
+customerName = st.text_input("Customer Name")
+contactLastName = st.text_input("Last Name")
+contactFirstName = st.text_input("First Name")
+phone = st.text_input("Phone")
+addressLine1 = st.text_input("Address line 1")
+city = st.text_input("City")
+state = st.text_input("State")
+country = st.text_input("Country")
+
+if st.button("Enter Customer"):
+    
+    try:
+        sql = f"INSERT INTO customers (`customerNumber`, `customerName`, `contactLastName`, `contactFirstName`, \
+                                        `phone`, `addressLine1`, `city`, `state`,`country`) \
+                                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);"
+        cursor.execute(sql, (customerNumber,customerName,contactLastName,contactFirstName, \
+                                phone,addressLine1,city, state, country))
+
+        # Connection is not autocommit by default, so we must commit to save changes
+        connection.commit()
+        print(f'Successfully inserted records')
+        
+    except Exception as e:
+        print(f'Error in insertion to MySQL database: {e}')
+    #insert_records()
+    st.write ("Records successfully inserted")
 
 st.markdown("### Update Customer Records:")
 
